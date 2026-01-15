@@ -1,0 +1,91 @@
+
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Truck, Users, Receipt, FileText } from 'lucide-react';
+
+interface ModuleCardProps {
+  title: string;
+  icon: React.ReactNode;
+  theme: string;
+  active?: boolean;
+  onClick?: () => void;
+}
+
+const ModuleCard: React.FC<ModuleCardProps> = ({ title, icon, theme, active, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      disabled={!active}
+      className={`relative group h-64 p-8 rounded-3xl border transition-all duration-300 flex flex-col items-center justify-center text-center space-y-4 bg-white border-gray-100 ${
+        active 
+          ? `shadow-xl hover:shadow-2xl hover:-translate-y-2 cursor-pointer` 
+          : `cursor-not-allowed shadow-sm opacity-60`
+      }`}
+    >
+      <div className={`p-6 rounded-2xl transition-all duration-500 ${theme} ${active ? 'group-hover:scale-110 shadow-lg' : 'shadow-sm'}`}>
+        {icon}
+      </div>
+      <div>
+        <h3 className="text-xl font-bold text-gray-900 tracking-tight">{title}</h3>
+        {!active && (
+          <span className="mt-2 inline-block px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-[10px] font-black uppercase tracking-widest">
+            Coming Soon
+          </span>
+        )}
+      </div>
+      {active && (
+        <div className="absolute top-6 right-6 w-2 h-2 bg-amber-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+      )}
+    </button>
+  );
+};
+
+export const LaunchpadScreen: React.FC = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="h-full flex flex-col items-center justify-center max-w-5xl mx-auto py-10">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-gray-900 tracking-tighter italic leading-none">Operational Hub</h1>
+        <p className="text-gray-500 mt-4 font-medium">Select a tactical module to initialize your session.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+        <ModuleCard
+          title="Fleet Management"
+          icon={<Truck size={40} strokeWidth={2.5} />}
+          theme="bg-amber-500 text-slate-900"
+          active
+          onClick={() => navigate('/app/map')}
+        />
+        <ModuleCard
+          title="Teams Management"
+          icon={<Users size={40} strokeWidth={2.5} />}
+          theme="bg-emerald-500 text-white"
+          active
+          onClick={() => navigate('/app/teams/dashboard')}
+        />
+        <ModuleCard
+          title="Billing & Invoices"
+          icon={<Receipt size={40} strokeWidth={2.5} />}
+          theme="bg-sky-500 text-white"
+          active
+          onClick={() => navigate('/app/billing/dashboard')}
+        />
+        <ModuleCard
+          title="Tenders & Contracts"
+          icon={<FileText size={40} strokeWidth={2.5} />}
+          theme="bg-indigo-500 text-white"
+          active
+          onClick={() => navigate('/app/tenders/dashboard')}
+        />
+      </div>
+
+      <div className="mt-16 text-center">
+        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">
+          om& Unified Intelligence • V0.1 • Salalah Hub
+        </p>
+      </div>
+    </div>
+  );
+};

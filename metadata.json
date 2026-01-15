@@ -1,0 +1,7 @@
+{
+  "name": "om&",
+  "description": "Unified Operations Management and Intelligence platform for fleet tracking, predictive maintenance, and real-time resource optimization.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
