@@ -19,6 +19,7 @@ import { TeamsReportsScreen } from './screens/teams/TeamsReportsScreen';
 import { BillingDashboardScreen } from './screens/billing/BillingDashboardScreen';
 import { TendersDashboardScreen } from './screens/tenders/TendersDashboardScreen';
 import { api } from './services/api';
+import { LanguageProvider } from './services/i18n';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const auth = api.auth.isAuthenticated();
@@ -27,38 +28,40 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginScreen />} />
-        
-        <Route path="/app/dashboard" element={<PrivateRoute><LaunchpadScreen /></PrivateRoute>} />
-        
-        {/* Fleet Management Routes */}
-        <Route path="/app/map" element={<PrivateRoute><MapScreen /></PrivateRoute>} />
-        <Route path="/app/fleet" element={<PrivateRoute><FleetScreen /></PrivateRoute>} />
-        <Route path="/app/vehicle/:vehicleId" element={<PrivateRoute><VehicleDetailScreen /></PrivateRoute>} />
-        <Route path="/app/maintenance" element={<PrivateRoute><MaintenanceQueueScreen /></PrivateRoute>} />
-        <Route path="/app/alerts" element={<PrivateRoute><AlertsScreen /></PrivateRoute>} />
-        <Route path="/app/admin/integrations" element={<PrivateRoute><AdminScreen /></PrivateRoute>} />
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+          
+          <Route path="/app/dashboard" element={<PrivateRoute><LaunchpadScreen /></PrivateRoute>} />
+          
+          {/* Fleet Management Routes */}
+          <Route path="/app/map" element={<PrivateRoute><MapScreen /></PrivateRoute>} />
+          <Route path="/app/fleet" element={<PrivateRoute><FleetScreen /></PrivateRoute>} />
+          <Route path="/app/vehicle/:vehicleId" element={<PrivateRoute><VehicleDetailScreen /></PrivateRoute>} />
+          <Route path="/app/maintenance" element={<PrivateRoute><MaintenanceQueueScreen /></PrivateRoute>} />
+          <Route path="/app/alerts" element={<PrivateRoute><AlertsScreen /></PrivateRoute>} />
+          <Route path="/app/admin/integrations" element={<PrivateRoute><AdminScreen /></PrivateRoute>} />
 
-        {/* Teams Management Routes */}
-        <Route path="/app/teams/dashboard" element={<PrivateRoute><TeamsDashboardScreen /></PrivateRoute>} />
-        <Route path="/app/teams/plan" element={<PrivateRoute><TeamsPlanScreen /></PrivateRoute>} />
-        <Route path="/app/teams/shifts/:shiftId" element={<PrivateRoute><ShiftDetailScreen /></PrivateRoute>} />
-        <Route path="/app/teams/projects" element={<PrivateRoute><TeamsProjectsScreen /></PrivateRoute>} />
-        <Route path="/app/teams/teams" element={<PrivateRoute><TeamsListScreen /></PrivateRoute>} />
-        <Route path="/app/teams/reports" element={<PrivateRoute><TeamsReportsScreen /></PrivateRoute>} />
+          {/* Teams Management Routes */}
+          <Route path="/app/teams/dashboard" element={<PrivateRoute><TeamsDashboardScreen /></PrivateRoute>} />
+          <Route path="/app/teams/plan" element={<PrivateRoute><TeamsPlanScreen /></PrivateRoute>} />
+          <Route path="/app/teams/shifts/:shiftId" element={<PrivateRoute><ShiftDetailScreen /></PrivateRoute>} />
+          <Route path="/app/teams/projects" element={<PrivateRoute><TeamsProjectsScreen /></PrivateRoute>} />
+          <Route path="/app/teams/teams" element={<PrivateRoute><TeamsListScreen /></PrivateRoute>} />
+          <Route path="/app/teams/reports" element={<PrivateRoute><TeamsReportsScreen /></PrivateRoute>} />
 
-        {/* Billing Module */}
-        <Route path="/app/billing/dashboard" element={<PrivateRoute><BillingDashboardScreen /></PrivateRoute>} />
+          {/* Billing Module */}
+          <Route path="/app/billing/dashboard" element={<PrivateRoute><BillingDashboardScreen /></PrivateRoute>} />
 
-        {/* Tenders Module */}
-        <Route path="/app/tenders/dashboard" element={<PrivateRoute><TendersDashboardScreen /></PrivateRoute>} />
+          {/* Tenders Module */}
+          <Route path="/app/tenders/dashboard" element={<PrivateRoute><TendersDashboardScreen /></PrivateRoute>} />
 
-        <Route path="/" element={<Navigate to="/app/dashboard" />} />
-        <Route path="*" element={<Navigate to="/app/dashboard" />} />
-      </Routes>
-    </Router>
+          <Route path="/" element={<Navigate to="/app/dashboard" />} />
+          <Route path="*" element={<Navigate to="/app/dashboard" />} />
+        </Routes>
+      </Router>
+    </LanguageProvider>
   );
 };
 

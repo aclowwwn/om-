@@ -23,43 +23,15 @@ import {
   Gavel,
   History,
   CreditCard,
-  Target
+  Target,
+  Globe
 } from 'lucide-react';
 import { api } from '../services/api';
-
-const FLEET_NAV = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/app/dashboard' },
-  { label: 'Map', icon: MapIcon, path: '/app/map' },
-  { label: 'Fleet', icon: Truck, path: '/app/fleet' },
-  { label: 'Maintenance', icon: Wrench, path: '/app/maintenance' },
-  { label: 'Alerts', icon: Bell, path: '/app/alerts' },
-  { label: 'Admin', icon: Settings, path: '/app/admin/integrations' }
-];
-
-const TEAMS_NAV = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/app/teams/dashboard' },
-  { label: 'Daily Plan', icon: Calendar, path: '/app/teams/plan' },
-  { label: 'Projects', icon: Briefcase, path: '/app/teams/projects' },
-  { label: 'Teams', icon: Users, path: '/app/teams/teams' },
-  { label: 'Reports', icon: FileText, path: '/app/teams/reports' }
-];
-
-const BILLING_NAV = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/app/billing/dashboard' },
-  { label: 'Invoices', icon: Receipt, path: '/app/billing/invoices' },
-  { label: 'Payments', icon: CreditCard, path: '/app/billing/payments' },
-  { label: 'Audit Trail', icon: History, path: '/app/billing/audit' }
-];
-
-const TENDERS_NAV = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/app/tenders/dashboard' },
-  { label: 'Marketplace', icon: Target, path: '/app/tenders/market' },
-  { label: 'My Bids', icon: Gavel, path: '/app/tenders/bids' },
-  { label: 'Contracts', icon: Briefcase, path: '/app/tenders/contracts' }
-];
+import { useTranslation } from '../services/i18n';
 
 export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { lang, setLang, t, isAr } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const user = api.auth.getCurrentUser();
@@ -69,22 +41,53 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const isBillingModule = location.pathname.includes('/billing/');
   const isTendersModule = location.pathname.includes('/tenders/');
 
+  const FLEET_NAV = [
+    { label: t.nav.dashboard, icon: LayoutDashboard, path: '/app/dashboard' },
+    { label: t.nav.map, icon: MapIcon, path: '/app/map' },
+    { label: t.nav.fleet, icon: Truck, path: '/app/fleet' },
+    { label: t.nav.maintenance, icon: Wrench, path: '/app/maintenance' },
+    { label: t.nav.alerts, icon: Bell, path: '/app/alerts' },
+    { label: t.nav.admin, icon: Settings, path: '/app/admin/integrations' }
+  ];
+
+  const TEAMS_NAV = [
+    { label: t.nav.dashboard, icon: LayoutDashboard, path: '/app/teams/dashboard' },
+    { label: t.nav.dailyPlan, icon: Calendar, path: '/app/teams/plan' },
+    { label: t.nav.projects, icon: Briefcase, path: '/app/teams/projects' },
+    { label: t.nav.teams, icon: Users, path: '/app/teams/teams' },
+    { label: t.nav.reports, icon: FileText, path: '/app/teams/reports' }
+  ];
+
+  const BILLING_NAV = [
+    { label: t.nav.dashboard, icon: LayoutDashboard, path: '/app/billing/dashboard' },
+    { label: t.nav.invoices, icon: Receipt, path: '/app/billing/invoices' },
+    { label: t.nav.payments, icon: CreditCard, path: '/app/billing/payments' },
+    { label: t.nav.audit, icon: History, path: '/app/billing/audit' }
+  ];
+
+  const TENDERS_NAV = [
+    { label: t.nav.dashboard, icon: LayoutDashboard, path: '/app/tenders/dashboard' },
+    { label: t.nav.marketplace, icon: Target, path: '/app/tenders/market' },
+    { label: t.nav.myBids, icon: Gavel, path: '/app/tenders/bids' },
+    { label: t.nav.contracts, icon: Briefcase, path: '/app/tenders/contracts' }
+  ];
+
   let currentNav = FLEET_NAV;
   let themeBg = 'bg-amber-500';
-  let moduleName = 'FleetTrack AI';
+  let moduleName = t.common.fleetTrack;
 
   if (isTeamsModule) {
     currentNav = TEAMS_NAV;
     themeBg = 'bg-emerald-500';
-    moduleName = 'SiteOps Tactical';
+    moduleName = t.common.siteOps;
   } else if (isBillingModule) {
     currentNav = BILLING_NAV;
     themeBg = 'bg-sky-500';
-    moduleName = 'Finance Core';
+    moduleName = t.common.financeCore;
   } else if (isTendersModule) {
     currentNav = TENDERS_NAV;
     themeBg = 'bg-indigo-500';
-    moduleName = 'ProcureWise';
+    moduleName = t.common.procureWise;
   }
 
   const handleLogout = () => {
@@ -92,16 +95,23 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
     navigate('/login');
   };
 
+  const toggleLang = () => {
+    setLang(lang === 'en' ? 'ar' : 'en');
+  };
+
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-slate-900 text-white">
       <div className="p-6 border-b border-slate-800 mb-2 flex items-center justify-between">
         <Link to="/app/dashboard" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <div className={`w-12 h-12 ${themeBg} rounded-lg flex items-center justify-center font-bold text-slate-900`}>om&</div>
+          {/* LOGO LOGIC: &mo for Arabic, om& for English */}
+          <div className={`w-12 h-12 ${themeBg} rounded-lg flex items-center justify-center font-bold text-slate-900`}>
+            {isAr ? '&mo' : 'om&'}
+          </div>
         </Link>
         <button 
           onClick={() => navigate('/app/dashboard')}
           className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors group"
-          title="Switch Module"
+          title={t.common.switchApps}
         >
           <Grid2X2 size={20} />
         </button>
@@ -112,7 +122,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           onClick={() => navigate('/app/dashboard')}
           className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-[0.2em] text-slate-500 hover:text-white hover:bg-slate-800 transition-all border border-slate-800/50 mb-4"
         >
-          <ChevronLeft size={14} /> Switch Apps
+          <ChevronLeft size={14} /> {t.common.switchApps}
         </button>
       </div>
 
@@ -127,10 +137,10 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               to={item.path}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 isActive ? `${themeBg} text-slate-900 font-semibold shadow-lg shadow-black/20` : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
+              } ${isAr ? 'flex-row' : 'flex-row'}`}
             >
               <item.icon size={20} />
-              <span className="text-sm font-medium">{item.label}</span>
+              <span className={`text-sm font-medium ${isAr ? 'text-right flex-1' : ''}`}>{item.label}</span>
             </Link>
           );
         })}
@@ -139,17 +149,17 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
       <div className="p-4 border-t border-slate-800">
         <button 
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition-colors"
+          className={`flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition-colors ${isAr ? 'flex-row' : 'flex-row'}`}
         >
           <LogOut size={20} />
-          <span className="text-sm font-medium">Logout</span>
+          <span className={`text-sm font-medium ${isAr ? 'text-right flex-1' : ''}`}>{t.common.logout}</span>
         </button>
       </div>
     </div>
   );
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className={`flex h-screen overflow-hidden bg-gray-50 ${isAr ? 'font-arabic' : ''}`}>
       {!isLaunchpad && (
         <aside className="hidden md:block transition-all duration-300 w-64 shrink-0">
           <SidebarContent />
@@ -174,17 +184,25 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               </button>
             )}
             <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 border px-2 py-1 rounded">
-              {isLaunchpad ? 'om& Unified Hub' : moduleName}
+              {isLaunchpad ? t.common.unifiedHub : moduleName}
             </div>
           </div>
 
           <div className="flex items-center gap-4">
+            <button 
+              onClick={toggleLang}
+              className="p-2 text-gray-400 hover:text-red-600 transition-colors flex items-center gap-2 text-xs font-bold"
+            >
+              <Globe size={18} />
+              <span className="hidden sm:inline uppercase">{lang === 'en' ? 'العربية' : 'English'}</span>
+            </button>
+
             {isLaunchpad && (
               <button 
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-gray-500 hover:text-red-600 transition-colors"
               >
-                <LogOut size={16} /> Logout
+                <LogOut size={16} /> {t.common.logout}
               </button>
             )}
             {!isLaunchpad && (
@@ -195,7 +213,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 <Grid2X2 size={20} />
               </button>
             )}
-            <div className="text-right hidden sm:block border-l pl-4 border-gray-100">
+            <div className={`text-right hidden sm:block border-l px-4 border-gray-100 ${isAr ? 'text-right' : 'text-right'}`}>
               <p className="text-sm font-bold text-gray-900">{user?.name}</p>
               <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">{user?.org}</p>
             </div>
