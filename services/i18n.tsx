@@ -26,13 +26,13 @@ export const translations = {
       vLabel: 'om& Unified Intelligence • V0.1 • Salalah Hub'
     },
     login: {
-      title: 'Operations Management and More',
+      title: 'Operations Management & More',
       email: 'Email address',
       password: 'Password',
       signIn: 'Sign In',
       initializing: 'Initializing...',
       placeholderEmail: 'operator@om-and.dev',
-      footer: 'Precision Built. Operations Ready.\nSalalah Regional Hub.',
+      footer: 'Built by com&.\nSalalah Regional Hub.',
       error: 'An unexpected error occurred.',
       langSwitch: 'العربية'
     },
@@ -56,7 +56,7 @@ export const translations = {
     },
     launchpad: {
       title: 'Operational Hub',
-      subtitle: 'Select a tactical module to initialize your session.',
+      subtitle: '',
       fleet: 'Fleet Management',
       teams: 'Teams Management',
       billing: 'Billing & Invoices',
@@ -134,7 +134,7 @@ export const translations = {
     },
     launchpad: {
       title: 'مركز العمليات',
-      subtitle: 'اختر وحدة تكتيكية لبدء جلستك.',
+      subtitle: '',
       fleet: 'إدارة الأسطول',
       teams: 'إدارة الفرق',
       billing: 'الفواتير والحسابات',
